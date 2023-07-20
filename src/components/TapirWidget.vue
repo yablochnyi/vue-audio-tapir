@@ -1,7 +1,7 @@
 <template>
-  <div class="text-center font-sans w-96 mx-auto rounded-lg shadow-lg border-solid border-2 p-8">
+  <div class="text-center font-sans w-96 mx-auto rounded-lg p-8">
     <h2 class="font-bold text-2xl">{{ title }}</h2>
-    <div>
+    <div class="flex">
       <icon-button
         :style="{ 'border-color': buttonColor }"
         :class="buttonClass"
@@ -16,6 +16,13 @@
         name="mic"
         @click="toggleRecording"
       />
+      <icon-button
+          :style="{ 'border-color': 'red' }"
+          :class="buttonClass"
+          v-if="recordedAudio"
+          name="delete"
+          @click="deleteAudio"
+      />
     </div>
     <div>{{ recordedTime }}</div>
     <div class="text-sm font-bold">{{ successMessage }}</div>
@@ -26,9 +33,8 @@
         Your browser does not support the
         <code>audio</code> element.
       </audio>
-      <figcaption class="text-sm mt-2">{{ listenInstructions }}</figcaption>
     </figure>
-    <submit-button @submit="sendData" :color="buttonColor" :label="submitLabel" />
+    <submit-button @submit="sendData" :color="buttonColor" :label="submitLabel" :showButton="showButton"/>
   </div>
 </template>
 
@@ -51,10 +57,10 @@ export default {
     buttonColor: { type: String, default: "green" },
 
     // labels
+    showButton: { type: Boolean, default: true },
     title: { type: String, default: "Record Audio Message" },
     instructionMessageStart: { type: String, default: "Click icon to start recording message." },
     instructionMessageStop: { type: String, default: "Click icon again to stop recording." },
-    listenInstructions: { type: String, default: "Listen to your recording before submitting." },
     submitLabel: { type: String, default: "Submit" },
     errorMessageMicrophone: { type: String, default: "Failed to use microphone. Please refresh and try again and permit the use of a microphone." },
     successMessageRecorded: { type: String, default: "Successfully recorded message!" },
@@ -163,6 +169,13 @@ export default {
       this.recording = false;
       this.instructionMessage = this.instructionMessageStart;
       this.errorMessage = this.errorMessageMicrophone;
+    },
+    deleteAudio() {
+      this.recordedAudio = null;
+      this.recordedBlob = null;
+      this.successMessage = null;
+      this.errorMessage = null;
+      this.instructionMessage = this.instructionMessageStart;
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <tapir-widget class="mt-20" :time="2" :successfulUpload="success" :failedUpload="failed"
+  <tapir-widget class="mt-20" :time="2" :showButton="false" :successfulUpload="success" :failedUpload="failed"
     :afterRecording="afterRec" :backendEndpoint="backendEndpoint" buttonColor="rgb(16, 185, 129)"
     :customUpload="customUp" />
 </template>
